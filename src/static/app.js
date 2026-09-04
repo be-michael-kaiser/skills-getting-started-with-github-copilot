@@ -20,11 +20,6 @@ document.addEventListener("DOMContentLoaded", () => {
         activityCard.className = "activity-card";
 
         const spotsLeft = details.max_participants - details.participants.length;
-        const participantsList = details.participants.length
-          ? `<ul class="participants-list">${details.participants
-              .map((participant) => `<li>${participant}</li>`)
-              .join("")}</ul>`
-          : '<p class="no-participants">No students signed up yet.</p>';
 
         activityCard.innerHTML = `
           <h4>${name}</h4>
@@ -33,9 +28,26 @@ document.addEventListener("DOMContentLoaded", () => {
           <p><strong>Availability:</strong> ${spotsLeft} spots left</p>
           <div class="participants">
             <strong>Participants</strong>
-            ${participantsList}
+            <div class="participants-body"></div>
           </div>
         `;
+
+        const participantsBody = activityCard.querySelector(".participants-body");
+        if (details.participants.length) {
+          const ul = document.createElement("ul");
+          ul.className = "participants-list";
+          details.participants.forEach((participant) => {
+            const li = document.createElement("li");
+            li.textContent = participant;
+            ul.appendChild(li);
+          });
+          participantsBody.appendChild(ul);
+        } else {
+          const p = document.createElement("p");
+          p.className = "no-participants";
+          p.textContent = "No students signed up yet.";
+          participantsBody.appendChild(p);
+        }
 
         activitiesList.appendChild(activityCard);
 
